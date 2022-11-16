@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout03}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/content.css" rel="stylesheet">
+    <title>Complete</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div id="register-complete" style="margin-bottom: 30px; margin-top: 30px;">
+        <img src="/img/dandelion.png" width="200" alt="complete"/>
+        <p>Complete!</p>
+        <p>개인 정보 수정이 정상적으로 처리되었습니다.</p>
+    </div>
+
+<div class="buttonSetContainer" style="justify-content: center;">
+    <a sec:authorize="hasAnyAuthority('ROLE_USER', 'ROLE_ADMIN')" href="/my-page/info-member"><button class="buttonSet" style="width: 120px;">확인</button></a>
+    <a sec:authorize="hasAnyAuthority('ROLE_BUSINESS')" href="/my-page/info-brand"><button class="buttonSet" style="width: 120px;">확인</button></a>
+</div>
+
+    <div style="clear: left; margin-bottom: 140px;"></div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout02}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/content.css" rel="stylesheet">
+    <title>Store - Other</title>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+
+        $(document).ready(function() {
+            $("searchBtn").on("click", function(e) {
+                e.preventDefault();
+                page(0);
+            });
+        });
+
+        function page(page) {
+            var searchBy = $("#searchBy").val();
+            var searchQuery = $("#searchQuery").val();
+
+            location.href="/store/other/" + page + "&searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+        }
+
+        </script>
+    </th:block>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <form th:action="@{'/store/other/' + ${items.number}}" role="form" method="get" th:object="${items}">
+
+        <div class="form-inline justify-content-center searchContainer" th:object="${searchDto}">
+            <select th:field="*{searchBy}" class="form-control searchInput">
+                <option value="all">선택</option>
+                <option value="itemName">상품명</option>
+                <option value="itemBrand">브랜드</option>
+            </select>
+            <input th:field="*{searchQuery}" type="text" class="form-control searchWord" placeholder="검색어를 입력해주세요">
+            <button id="searchBtn" type="submit" class="btn btn-primary searchButton">검색</button>
+        </div>
+
+        <div class="bigContainer">
+            <div class="smallContainer" th:each="item, status: ${items.getContent()}">
+                <a th:href="'/store/itemDetail/' + ${item.id}" class="goToInfo">
+                    <img style="object-fit: cover;" width="300" height="300" th:src="${item.imgUrl}" th:alt="${item.itemName}" />
+                </a>
+                <span th:text="${item.itemName}" class="itemName"></span>
+                <span th:text="${item.itemBrand}" class="brandName"></span>
+                <span class="itemPrice">[[${item.itemSellStatus.toString() == 'SOLD_OUT'} ? '품절' : ${#numbers.formatInteger(item.price, 0, 'COMMA')} + '원']]</span>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: center; margin-top: 10px;" th:with="start=${(items.number/maxPage) * maxPage + 1}, end = (${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-sm">
+
+                    <li class="page-item" th:classappend="${items.first} ? 'disabled'">
+                        <a style="color: #2b2f2f;" class="page-link" aria-label="Previous"
+                           th:onclick="'javascript:page(' + ${items.number - 1} + ')'">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+
+                    <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1} ? 'active' : ''">
+                        <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" style="color: #2b2f2f;" class="page-link">[[${page}]]</a>
+                    </li>
+
+                    <li class="page-item" th:classappend="${items.last} ? 'disabled'">
+                        <a style="color: #2b2f2f;" class="page-link" aria-label="Next"
+                           th:onclick="'javascript:page(' + ${items.number + 1} + ')'">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+
+                </ul>
+            </nav>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

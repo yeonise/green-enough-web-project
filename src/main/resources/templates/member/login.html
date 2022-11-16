@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout01}">
+<head>
+  <meta charset="UTF-8">
+  <link href="/css/form.css" rel="stylesheet">
+  <title>Log In</title>
+
+  <th:block layout:fragment="css">
+    <style>
+      .error {
+        color:#58B329;
+        font-size: 12px;
+      }
+    </style>
+  </th:block>
+
+</head>
+<body>
+
+  <div layout:fragment="content">
+    <p style="width: 100%; margin: 0 auto; text-align: center; margin-bottom: 24px; font-size: x-large; font-family: 'Courgette', cursive;">Login</p>
+
+    <div style="width: 100%; display: flex; justify-content: center;">
+      <form class="loginForm" method="post" action="/member/login">
+
+        <div class="mb-3">
+          <label th:for="email" class="form-label label">이메일</label>
+          <input style="margin-bottom: 10px; border-radius: 20px; font-size: small; height: 42px;" placeholder="example@example.com" type="email" name="email" class="form-control" aria-describedby="emailHelp">
+        </div>
+
+        <div class="mb-3">
+          <label th:for="password" class="form-label label">비밀번호</label>
+          <input style="border-radius: 20px; font-size: small; height: 42px;" placeholder="비밀번호를 입력해주세요" type="password" name="password" class="form-control">
+        </div>
+
+        <p th:if="${loginErrorMsg}" class="error" th:text="${loginErrorMsg}" style="margin-bottom: 0;"></p>
+
+        <button type="submit" class="submitButton" style="width: 240px; height: 40px; margin-top: 30px; margin-bottom: 8px">로그인</button>
+        <hr />
+        <button onclick="location.href='/oauth2/authorization/naver'" type="button" class="submitButton" style="width: 240px; height: 40px; background-color: #1CC801; margin-top: 6px;">네이버로 로그인</button>
+        <button onclick="location.href='/oauth2/authorization/google'" type="button" class="submitButton" style="width: 240px; height: 40px; background-color: rgb(066, 133, 244); margin-bottom: 80px">구글로 로그인</button>
+        <input type="hidden" th:name="${_csrf.parameterName}"
+               th:value="${_csrf.token}">
+      </form>
+    </div>
+
+  </div>
+
+</body>
+</html>

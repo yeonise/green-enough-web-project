@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorate="~{layouts/layout04}">
+<head>
+  <meta charset="UTF-8">
+  <link href="/css/content.css" rel="stylesheet">
+  <title>Community - Notice</title>
+  <th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+        $(document).ready(function() {
+            $("searchBtn").on("click", function(e) {
+                e.preventDefault();
+                page(0);
+            });
+        });
+
+        function page(page) {
+            var searchBy = $("#searchBy").val();
+            var searchQuery = $("#searchQuery").val();
+
+            location.href="/community/notice/" + page + "?searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+        }
+
+        </script>
+  </th:block>
+</head>
+<body>
+
+<div layout:fragment="content">
+  <form th:action="@{'/community/notice/' + ${posts.number}}" role="form" method="get" th:object="${posts}">
+
+  <div class="buttonContainer">
+    <a href="/community/post/new" class="link" sec:authorize="hasAnyAuthority('ROLE_ADMIN')" style="text-decoration: none; font-size: 12px;">글쓰기</a>
+  </div>
+
+  <div>
+    <table class="postTable">
+      <thead>
+      <tr>
+        <th width="45%">제목</th>
+        <th width="10%">작성자</th>
+        <th width="10%">작성일</th>
+        <th width="5%">조회수</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="post, status: ${posts.getContent()}">
+        <td style="text-align: left;"><a style="padding-left: 10px;" th:href="'/community/post-detail/' + ${post.id}" th:text="'• ' + ${post.title}"></a></td>
+        <td th:text="${post.writer}"></td>
+        <td>[[${#temporals.format(post.regTime, 'yyyy-MM-dd')}]]</td>
+        <td th:text="${post.hits}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div style="display: flex; justify-content: center; margin-top: 30px;" th:with="start=${(posts.number/maxPage) * maxPage + 1}, end = (${(posts.totalPages == 0) ? 1 : (start + (maxPage - 1) < posts.totalPages ? start + (maxPage - 1) : posts.totalPages)})">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination pagination-sm">
+
+        <li class="page-item" th:classappend="${posts.first} ? 'disabled'">
+          <a style="color: #2b2f2f;" class="page-link" aria-label="Previous"
+             th:onclick="'javascript:page(' + ${posts.number - 1} + ')'">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${posts.number eq page-1} ? 'active' : ''">
+          <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" style="color: #2b2f2f;" class="page-link">[[${page}]]</a>
+        </li>
+
+        <li class="page-item" th:classappend="${posts.last} ? 'disabled'">
+          <a style="color: #2b2f2f;" class="page-link" aria-label="Next"
+             th:onclick="'javascript:page(' + ${posts.number + 1} + ')'">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+
+  </form>
+</div>
+
+</body>
+</html>

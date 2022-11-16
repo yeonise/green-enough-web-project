@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout01}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/content.css" rel="stylesheet">
+    <title>Register</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+<div class="registerContainer">
+<div class="buttonSetContainer" style="flex-direction: column; align-items:center; float: left; margin-top:30px; margin-left: 20px; margin-right: 20px;">
+    <img src="/img/register/woman on a bicycle.png" width="240" alt="thank you"/>
+    <a href="/member/register/member"><button class="buttonSet" style="width: 230px; height: 80px; border-radius: 40px; font-size: 14px;  margin-top:30px;">일반 회원으로 가입하기</button></a>
+</div>
+<div class="buttonSetContainer" style="flex-direction: column; align-items:center; float: left; margin-top:30px; margin-left: 20px; margin-right: 20px;">
+    <img src="/img/register/farmer drinking water.png" width="240" alt="thank you"/>
+    <a href="/member/register/brand"><button class="buttonSet" style="width: 230px; height: 80px; border-radius: 40px; font-size: 14px;">사업자 회원으로 가입하기</button></a>
+</div>
+</div>
+
+    <div style="clear: left; margin-bottom: 170px;"></div>
+
+</div>
+
+</body>
+</html>

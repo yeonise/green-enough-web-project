@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout01}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/content.css" rel="stylesheet">
+    <title>Register Complete</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div id="register-complete" style="margin-bottom: 30px;">
+        <img src="/img/man on the tree.png" width="240" alt="welcome"/>
+        <p>Welcome!</p>
+        <p>회원 가입이 정상적으로 처리되었습니다.</p>
+    </div>
+
+<div class="buttonSetContainer" style="justify-content: center;">
+    <a href="/"><button class="buttonSet">메인으로 돌아가기</button></a>
+    <a href="/member/login"><button class="buttonSet">로그인 페이지로 이동하기</button></a>
+</div>
+
+    <div style="clear: left; margin-bottom: 140px;"></div>
+
+</div>
+
+</body>
+</html>

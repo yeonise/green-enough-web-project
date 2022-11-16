@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css");
+
+* {
+    font-family: 'Pretendard';
+}
+
+input {
+    box-shadow: none!important;
+}
+
+#count {
+    width: 70px;
+    height: 30px;
+    border: none;
+    border-radius: 15px;
+    background-color: whitesmoke;
+    font-size: small;
+    text-align: right;
+}
+
+#count:focus {
+    outline: 1px solid #58B329;
+    background-color: white;
+}
+
+.postContainer {
+    margin-left: 21%;
+    margin-right: 20%;
+    display: grid;
+    justify-items: center;
+    justify-content: center;
+    grid-template-columns: 800px;
+    gap: 10px 10px;
+}
+
+.titleContainer {
+     margin-left: 21%;
+     margin-right: 20%;
+     display: grid;
+     justify-content: center;
+     grid-template-columns: 590px;
+     gap: 6px 6px;
+ }
+
+.detailFormTop {
+     display: flex;
+     flex-direction: column;
+     justify-content: flex-start;
+     align-items: center;
+ }
+
+.detailContainer {
+    margin-left: 21%;
+    margin-right: 20%;
+    display: grid;
+    justify-items: center;
+    justify-content: center;
+    grid-template-columns: 400px 400px;
+    gap: 30px 30px;
+}
+
+
+.detailFormLeft {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start
+}
+
+.detailFormRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.edit {
+    color: #58B329;
+    font-size: 13px;
+    text-decoration: none;
+    text-align: right;
+    margin-left: 50px;
+    transition: all 0.3s;
+}
+
+.edit:hover {
+    color: rgb(62, 62, 62);
+}
+
+.buttonSet {
+    font-size: smaller;
+    width: 110px;
+    height: 36px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 20px;
+    transition: all 0.3s;
+}
+
+.buttonSet:hover {
+    background-color: #58B329;
+    color: white;
+}

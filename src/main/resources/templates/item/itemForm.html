@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout01}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/form.css" rel="stylesheet">
+    <title>Registering a Product</title>
+
+    <th:block layout:fragment="css">
+        <style>
+            .fieldError {
+                color:#58B329;
+                font-size: 12px;
+            }
+        </style>
+    </th:block>
+
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+        $(document).ready(function() {
+            var errorMessage = [[${errorMessage}]];
+            if (errorMessage != null) {
+                alert(errorMessage);
+            }
+            bindDomEvent();
+        });
+
+        function bindDomEvent() {
+            $(".custom-file-input").on("change", function() {
+                var fileName = $(this).val().split("/").pop(); // 이미지 파일명
+                var fileExt = fileName.substring(fileName.lastIndexOf(".") + 1); // 확장자 추출
+                fileExt = fileExt.toLowerCase(); // 소문자로 변환
+
+                if (fileExt != "jpg" && fileExt != "jpeg" && fileExt != "gif" && fileExt != "png" && fileExt != "bmp") {
+                alert("이미지 파일만 등록이 가능합니다.");
+                return;
+            }
+            $(this).siblings(".custom-file-label").html(fileName);
+            });
+        }
+        </script>
+    </th:block>
+
+</head>
+<body>
+
+<div layout:fragment="content">
+
+
+    <div>
+        <form role="form" method="post" enctype="multipart/form-data" th:object="${itemFormDto}" class="writeForm" style="margin-left: 30%; margin-right: 30%;">
+
+            <div class="mainTitle" th:if="${#strings.isEmpty(itemFormDto.id)}">
+                <h5>상품 등록하기</h5>
+            </div>
+            <div class="mainTitle" th:unless="${#strings.isEmpty(itemFormDto.id)}">
+                <h5>상품 수정하기</h5>
+            </div>
+
+            <p style="font-size: 12px; font-weight: 300; color: #58B329;">모든 항목은 필수 입력 값입니다.</p>
+
+            <input type="hidden" th:field="*{id}">
+
+            <div class="mb-3" style="margin-top: 10px;">
+                <label for="brand" class="form-label label">판매 브랜드</label>
+                <input type="text" name="itemBrand" th:value="${brandName}" class="form-control input" id="brand" readonly style="border-radius: 20px; font-size: small; height: 40px;">
+            </div>
+            <p th:if="${#fields.hasErrors('itemBrand')}" th:errors="*{itemBrand}" class="fieldError">Incorrect data</p>
+
+            <div class="mb-3">
+                <label class="form-label label">상품 상태</label>
+                    <select th:field="*{itemSellStatus}" class="form-select input" aria-label="itemSellStatus" style="border-radius: 20px; font-size: small; height: 40px;">
+                        <option value="SELL">상품 판매</option>
+                        <option value="SOLD_OUT">상품 품절</option>
+                    </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label label">상품 카테고리</label>
+                    <select th:field="*{itemCategory}" class="form-select input" aria-label="itemCategory" style="border-radius: 20px; font-size: small; height: 40px;">
+                        <option value="PLANT">식물</option>
+                        <option value="TOOL">재료 및 도구</option>
+                        <option value="POT">화분</option>
+                        <option value="OTHER">기타 소품</option>
+                    </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="name" class="form-label label">상품 이름</label>
+                <input type="text" th:field="*{itemName}" class="form-control input" id="name" placeholder="상품 이름을 입력해주세요." style="border-radius: 20px; font-size: small; height: 40px;">
+            </div>
+            <p th:if="${#fields.hasErrors('itemName')}" th:errors="*{itemName}" class="fieldError">Incorrect data</p>
+
+            <div class="mb-3">
+                <label for="price" class="form-label label">판매 가격</label>
+                <input type="number" th:field="*{price}" class="form-control input" id="price" placeholder="판매 가격을 입력해주세요." style="border-radius: 20px; font-size: small; height: 40px;">
+            </div>
+            <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="fieldError">Incorrect data</p>
+
+            <div class="mb-3">
+                <label for="stock" class="form-label label">상품 재고</label>
+                <input type="number" th:field="*{stock}" class="form-control input" id="stock" placeholder="상품 재고를 입력해주세요." style="border-radius: 20px; font-size: small; height: 40px;">
+            </div>
+            <p th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="fieldError">Incorrect data</p>
+
+            <div th:if="${#lists.isEmpty(itemFormDto.itemImgDtoList)}">
+                <div class="mb-3">
+                    <label class="form-label label custom-file-label">상품 이미지 첨부<span style="font-size: 11px; font-weight: 300; color: gray; margin-left: 6px;">첨부 가능 용량 : 총 50MB / ctrl 또는 shift 키를 사용하여 사진을 여러 장 선택할 수 있습니다.</span></label>
+                    <input class="form-control form-control-lg custom-file-input" type="file" name="itemImgFile" multiple style="border-radius: 20px; font-size: small; height: 37px;">
+                </div>
+            </div>
+
+            <div th:if="${not #lists.isEmpty(itemFormDto.itemImgDtoList)}">
+                <div class="mb-3" th:each="itemImgDto, status: ${itemFormDto.itemImgDtoList}">
+                    <label class="form-label label custom-file-label" th:text="${not #strings.isEmpty(itemImgDto.oriImgName)} ? '기존 상품 이미지 : ' + ${itemImgDto.oriImgName} : '상품 이미지 파일 추가'"></label>
+                    <input class="form-control form-control-lg custom-file-input" type="file" name="itemImgFile" multiple style="border-radius: 20px; font-size: small; height: 37px;">
+                    <input type="hidden" name="itemImgIds" th:value="${itemImgDto.id}">
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(itemFormDto.itemDetailImgDtoList)}">
+                <div class="mb-3">
+                    <label class="form-label label custom-file-label">상세 페이지 이미지 첨부<span style="font-size: 11px; font-weight: 300; color: gray; margin-left: 6px;">첨부 가능 용량 : 총 50MB / ctrl 또는 shift 키를 사용하여 사진을 여러 장 선택할 수 있습니다.</span></label>
+                    <input class="form-control form-control-lg custom-file-input" type="file" name="itemDetailImgFile" multiple style="border-radius: 20px; font-size: small; height: 37px;">
+                </div>
+            </div>
+
+            <div th:if="${not #lists.isEmpty(itemFormDto.itemDetailImgDtoList)}">
+                <div class="mb-3" th:each="itemDetailImgDto, status: ${itemFormDto.itemDetailImgDtoList}">
+                    <label class="form-label label custom-file-label" th:text="${not #strings.isEmpty(itemDetailImgDto.oriImgName)} ? '기존 상품 상세 이미지 : ' + ${itemDetailImgDto.oriImgName} : '상품 상세 이미지 파일 추가' + ${status.index + 1}"></label>
+                    <input class="form-control form-control-lg custom-file-input" type="file" name="itemDetailImgFile" multiple style="border-radius: 20px; font-size: small; height: 37px;">
+                    <input type="hidden" name="itemDetailImgIds" th:value="${itemDetailImgDto.id}">
+                </div>
+            </div>
+
+            <div style="display: block; margin: 0 auto;" th:if="${#strings.isEmpty(itemFormDto.id)}">
+                <button th:formaction="@{/business/item/new}" type="submit" class="submitButton" style="margin-bottom: 30px;">등록하기</button>
+            </div>
+
+            <div style="display: block; margin: 0 auto;" th:unless="${#strings.isEmpty(itemFormDto.id)}">
+                <button type="submit" th:formaction="@{'/business/item/' + ${itemFormDto.id}}" class="submitButton" style="margin-bottom: 30px;">수정하기</button>
+                <button th:formaction="@{'/business/item/delete/' + ${itemFormDto.id}}" class="submitButton" style="margin-bottom: 30px;">삭제하기</button>
+            </div>
+
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <input type="hidden" name="id" th:value="${itemFormDto.id}"/>
+
+        </form>
+    </div>
+
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Courgette&display=swap');
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.5/dist/web/static/pretendard.css");
+
+* {
+    font-family: 'Pretendard';
+    margin: 0;
+    padding: 0;
+}
+
+.weatherContainer {
+    z-index: 1;
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    position: relative;
+    left: 310px;
+    top: 50px;
+}
+
+.weather {
+    font-size: small;
+}
+
+.weatherPhoto {
+    position: relative;
+    left: 410px;
+    bottom: 260px;
+}
+
+.mainPhoto {
+    position: relative;
+    left: 430px;
+    bottom: 150px;
+}
+
+.tipContainer {
+    display: flex;
+    width: 500px;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-end;
+    position: relative;
+    left: 660px;
+    bottom: 140px;
+}
+
+.tip {
+    width: 500px;
+    word-wrap: break-word;
+    font-size: small;
+    text-align: right;
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout03}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/content.css" rel="stylesheet">
+    <title>My page - My post</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+    <div>
+        <table class="postTable" style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 40px;">
+            <tr>
+                <th class="orderDetailHead" width="10%">카테고리</th>
+                <th class="orderDetailHead" width="10%">작성일</th>
+                <th class="orderDetailHead" width="40%">제목</th>
+                <th class="orderDetailHead" width="15%">작성자</th>
+                <th class="orderDetailHead" width="5%">조회수</th>
+            </tr>
+            <tr style="margin-top: 10px; margin-bottom: 100px;" th:each="post, status: ${posts.getContent()}">
+                <td th:if="${post.postCategory == T(com.green.project.constant.PostCategory).NOTICE}">공지사항</td>
+                <td th:if="${post.postCategory == T(com.green.project.constant.PostCategory).QUESTION}">질문해요</td>
+                <td th:if="${post.postCategory == T(com.green.project.constant.PostCategory).GALLERY}">자랑해요</td>
+                <td th:if="${post.postCategory == T(com.green.project.constant.PostCategory).DEAL}">중고거래</td>
+                <td th:text="${#temporals.format(post.regTime, 'yyyy-MM-dd HH:mm')}"></td>
+                <td><a th:href="'/community/post-detail/' + ${post.postId}" th:text="${post.title}"></a></td>
+                <td th:text="${post.writer}"></td>
+                <td th:text="${post.hits}">0</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 10px;" th:with="start=${(posts.number/maxPage) * maxPage + 1}, end = (${(posts.totalPages == 0) ? 1 : (start + (maxPage - 1) < posts.totalPages ? start + (maxPage - 1) : posts.totalPages)})">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-sm">
+
+                <li class="page-item" th:classappend="${posts.first} ? 'disabled'">
+                    <a style="color: #2b2f2f;" class="page-link" aria-label="Previous"
+                       th:onclick="'javascript:page(' + ${posts.number - 1} + ')'">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${posts.number eq page-1} ? 'active' : ''">
+                    <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" style="color: #2b2f2f;" class="page-link">[[${page}]]</a>
+                </li>
+
+                <li class="page-item" th:classappend="${posts.last} ? 'disabled'">
+                    <a style="color: #2b2f2f;" class="page-link" aria-label="Next"
+                       th:onclick="'javascript:page(' + ${posts.number + 1} + ')'">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+</div>
+
+<th:block layout:fragment="script">
+
+    <script th:inline="javascript">
+
+        function page(page) {
+            location.href="/my-page/my-post/" + page;
+        }
+
+    </script>
+
+</th:block>
+
+</body>
+</html>

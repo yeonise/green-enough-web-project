@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div th:fragment="navbar">
+
+  <nav class="navbar navbar-expand-lg" style="background-color: white; padding-bottom: 30px;">
+    <div class="subnav collapse navbar-collapse" id="navbarSupportedContent">
+      <div>
+        <ul class="menu navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="/store/plant" style="margin-left: 50px;">식물</a></li>
+          <li class="nav-item"><a class="nav-link" href="/store/tool" style="margin-left: 50px;">재료 및 도구</a></li>
+          <li class="nav-item"><a class="nav-link" href="/store/pot" style="margin-left: 50px;">화분</a></li>
+          <li class="nav-item"><a class="nav-link" href="/store/other" style="margin-left: 50px;">기타 소품</a></li>
+          <li class="nav-item"><a class="nav-link" href="/business/items" style="margin-left: 50px;" sec:authorize="hasAnyAuthority('ROLE_BUSINESS')">사업자 관리 페이지</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+</div>
+
+</html>

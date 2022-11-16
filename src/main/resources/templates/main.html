@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout01}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/main.css" rel="stylesheet">
+    <title>Welcome!</title>
+</head>
+<body>
+
+    <div layout:fragment="content" style="padding-top: 22px; height: 550px;">
+        <div class="weatherContainer">
+            <div id="clock" class="weather" style="font-size: 0.87em; font-weight: 500; margin-bottom: 10px;">00월 00일 오늘의 날씨</div>
+            <div id="city" class="weather" style="margin-bottom: 2px;">날씨 정보를 불러오는 중</div>
+            <div id="weather" class="weather" style="margin-bottom: 2px;">...</div>
+            <div id="temperature" class="weather" style="margin-bottom: 2px;">...</div>
+            <div id="humidity" class="weather">...</div>
+        </div>
+
+        <img id="weatherPhoto" class="weatherPhoto" src="/img/weather/leaf.png" alt="날씨 이미지" width="70">
+        <img id="mainPhoto" class="mainPhoto" src="/img/main/main01.png" alt="메인 이미지" width="400">
+
+        <div class="tipContainer">
+            <div class="tip" style="margin-bottom: 8px; font-weight: 400px; font-size: 0.87em; font-family: 'Courgette', cursive;">Tips for green</div>
+            <span class="tip" id="tip">today's tip</span>
+        </div>
+    </div>
+
+    <div th:block layout:fragment="script">
+        <script src="/js/tips.js"></script>
+        <script src="/js/main.js"></script>
+    </div>
+</body>
+</html>

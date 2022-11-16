@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout02}">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/content.css" rel="stylesheet">
+    <title>Store - Management</title>
+    <th:block layout:fragment="script">
+        <script th:inline="javascript">
+
+        $(document).ready(function() {
+            $("searchBtn").on("click", function(e) {
+                e.preventDefault();
+                page(0);
+            });
+        });
+
+        function page(page) {
+            var searchDateType = $("#searchDateType").val();
+            var searchSellStatus = $("#searchSellStatus").val();
+            var searchBy = $("#searchBy").val();
+            var searchQuery = $("#searchQuery").val();
+
+            location.href="/business/items/" + page + "?searchDateType=" + searchDateType
+            + "&searchSellStatus=" + searchSellStatus
+            + "&searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+        }
+
+        </script>
+    </th:block>
+</head>
+<body>
+
+<div layout:fragment="content">
+<form th:action="@{'/business/items/' + ${items.number}}" role="form" method="get" th:object="${items}">
+    <div class="form-inline justify-content-center searchContainer" th:object="${searchDto}">
+        <select th:field="*{searchDateType}" class="form-control searchInput">
+            <option value="all">기간</option>
+            <option value="오늘">오늘</option>
+            <option value="일주일">일주일</option>
+            <option value="1개월">1개월</option>
+            <option value="3개월">3개월</option>
+            <option value="6개월">6개월</option>
+        </select>
+        <select th:field="*{searchSellStatus}" class="form-control searchInput">
+            <option value="">상태</option>
+            <option value="SELL">판매</option>
+            <option value="SOLD_OUT">품절</option>
+        </select>
+        <select th:field="*{searchBy}" class="form-control searchInput">
+            <option value="itemName">상품명</option>
+            <option value="itemCategory">카테고리</option>
+        </select>
+        <input th:field="*{searchQuery}" type="text" class="form-control searchWord" placeholder="검색어를 입력해주세요">
+        <button id="searchBtn" type="submit" class="btn btn-primary searchButton">검색</button>
+    </div>
+
+    <div class="linkContainer">
+        <a th:href="@{/business/item/new}" class="link">새 상품 등록하기 →</a>
+    </div>
+
+    <div>
+        <table class="postTable" style="width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 40px;">
+            <thead>
+            <tr>
+                <th class="orderDetailHead" width="5%">인덱스</th>
+                <th class="orderDetailHead" width="10%">카테고리</th>
+                <th class="orderDetailHead" width="30%">상품 이름</th>
+                <th class="orderDetailHead" width="12%">등록일</th>
+                <th class="orderDetailHead" width="8%">등록 상태</th>
+                <th class="orderDetailHead" width="10%">가격</th>
+                <th class="orderDetailHead" width="5%">재고</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr style="margin-top: 10px; margin-bottom: 100px; height: 50px;" th:each="item, status:${items.getContent()}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.itemCategory}"></td>
+                <td><a th:href="'/business/item/' + ${item.id}" th:text="${item.itemName}"></a></td>
+                <td th:text="${#temporals.format(item.regTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+                <td th:text="${item.itemSellStatus == T(com.green.project.constant.ItemSellStatus).SELL} ? '판매중' : '품절'"></td>
+                <td>[[${#numbers.formatInteger(item.price, 0, 'COMMA')}]]원</td>
+                <td th:text="${item.stock}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 10px;" th:with="start=${(items.number/maxPage) * maxPage + 1}, end = (${(items.totalPages == 0) ? 1 : (start + (maxPage - 1) < items.totalPages ? start + (maxPage - 1) : items.totalPages)})">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination pagination-sm">
+
+                <li class="page-item" th:classappend="${items.first} ? 'disabled'">
+                    <a style="color: #2b2f2f;" class="page-link" aria-label="Previous"
+                       th:onclick="'javascript:page(' + ${items.number - 1} + ')'">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+
+                <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${items.number eq page-1} ? 'active' : ''">
+                    <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" style="color: #2b2f2f;" class="page-link">[[${page}]]</a>
+                </li>
+
+                <li class="page-item" th:classappend="${items.last} ? 'disabled'">
+                    <a style="color: #2b2f2f;" class="page-link" aria-label="Next"
+                       th:onclick="'javascript:page(' + ${items.number + 1} + ')'">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+    </div>
+
+</form>
+</div>
+
+</body>
+</html>

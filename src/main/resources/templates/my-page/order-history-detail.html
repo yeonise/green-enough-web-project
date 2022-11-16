@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout03}">
+<head>
+  <meta charset="UTF-8">
+  <link href="/css/content.css" rel="stylesheet">
+  <title>My page - Order History</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+  <div style="width: 78%; margin: auto; display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 16px;">
+    <span style="font-size: large; font-weight: bolder;">주문/결제내역</span>
+    <span style="font-size: 11px; font-weight: 400; color: gray;">배송 준비 중 단계부터 배송지 변경 및 취소가 불가합니다.</span>
+  </div>
+
+  <div>
+    <table class="postTable" style="width: 80%; margin-left: 10%; margin-right: 10%;">
+      <tr>
+        <th class="orderDetailHead" width="7%">주문 날짜</th>
+        <th class="orderDetailHead" width="7%">주문 번호</th>
+        <th class="orderDetailHead" width="38%">상품 정보</th>
+        <th class="orderDetailHead" width="5%">판매자</th>
+        <th class="orderDetailHead" width="5%">배송비</th>
+        <th class="orderDetailHead" width="4%">수량</th>
+        <th class="orderDetailHead" width="7%">상품 금액</th>
+        <th class="orderDetailHead" width="7%">상태</th>
+      </tr>
+      <tr>
+        <td>22-10-01</td>
+        <td>2210011013</td>
+        <td style="display: flex; align-items: center; justify-content: center;"><a class="goToInfo" style="float: left;" href="#"><img src="/img/plant 01.png" width="100px" /></a>
+          <div style="display: flex; flex-direction: column; align-items: flex-start;">
+            <span style="margin-left: 20px;">뱅갈 고무나무</span>
+            <span style="margin-left: 20px;">토분 옵션 : 브라운</span>
+          </div>
+        </td>
+        <td>심다</td>
+        <td>3,000</td>
+        <td>1</td>
+        <td>30,000</td>
+        <td>배송 준비 중</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="orderMember">
+    <div style="font-size: 15px; font-weight: 600; margin-bottom: 10px;">
+      주문인 정보
+    </div>
+    <div class="row" style="margin-bottom: 0">
+      <label for="memberName" class="col-sm-2 col-form-label">주문인</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="memberName" value="이병건">
+      </div>
+    </div>
+    <div class="mb-3 row" style="margin-top: 0">
+      <label for="memberPhone" class="col-sm-2 col-form-label">연락처</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="memberPhone" value="010-1000-2000">
+      </div>
+    </div>
+  </div>
+
+  <div class="deliveryInfo">
+    <div style="font-size: 15px; font-weight: 600; margin-bottom: 10px;">
+      배송지 정보
+    </div>
+    <div class="row" style="margin-bottom: 0">
+      <label for="name" class="col-sm-2 col-form-label">수령인</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="name" value="이병건">
+      </div>
+    </div>
+    <div class="row" style="margin-top: 0">
+      <label for="phone" class="col-sm-2 col-form-label">연락처</label>
+      <div class="col-sm-10">
+        <input type="text" readonly class="form-control-plaintext" id="phone" value="010-1000-2000">
+      </div>
+    </div>
+    <div class="input-group mb-3">
+      <label for="address" class="col-sm-2 col-form-label">주소</label>
+      <input style="font-size: small;" id="address" type="text" class="form-control" placeholder="기존에 입력했던 주소" aria-label="address" aria-describedby="button-addon2">
+      <button style="font-size: small;" class="btn btn-outline-secondary" type="button" id="button-addon2">주소 검색</button>
+    </div>
+  </div>
+  <div style="display: flex; justify-content: center; margin-bottom: 40px;">
+    <button type="submit" class="editButton">목록으로</button>
+    <button type="submit" class="editButton">배송지 수정</button>
+    <button type="submit" class="editButton">주문 취소</button>
+  </div>
+
+
+</div>
+
+</body>
+</html>

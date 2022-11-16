@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+    <div th:fragment="header">
+        <nav class="navbar navbar-expand-lg" style="background-color: white;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/" style="font-size: 1.6em;">Green<br>Enough</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="login collapse navbar-collapse" id="navbarSupportedContent">
+                    <div>
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item" sec:authorize="isAnonymous()">
+                                <a class="nav-link" href="/member/login" style="font-weight: 550; margin-left: 30px;">로그인</a>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAnonymous()">
+                                <a class="nav-link" href="/member/register" style="font-weight: 550; margin-left: 30px;">회원가입</a>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAuthenticated()">
+                                <a class="nav-link" href="/community/notice" style="font-weight: 550; margin-left: 30px;">커뮤니티</a>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAuthenticated()">
+                                <a class="nav-link" href="/store/plant" style="font-weight: 550; margin-left: 30px;">스토어</a>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAuthenticated()">
+                                <a class="nav-link" href="/my-page/order-history" style="font-weight: 550; margin-left: 30px;">마이페이지</a>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAuthenticated()">
+                                <a class="nav-link" href="#" style="font-weight: 550; margin-left: 30px;">채팅</a>
+                            </li>
+                            <li class="nav-item" sec:authorize="isAuthenticated()">
+                                <a class="nav-link" href="/member/logout" style="font-weight: 550; margin-left: 30px;">로그아웃</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout04}">
+<head>
+  <meta charset="UTF-8">
+  <link href="/css/content.css" rel="stylesheet">
+  <title>Community - Dictionary</title>
+  <th:block layout:fragment="script">
+    <script th:inline="javascript">
+
+        $(document).ready(function() {
+            $("searchBtn").on("click", function(e) {
+                e.preventDefault();
+                page(0);
+            });
+        });
+
+        function page(page) {
+            var searchBy = $("#searchBy").val();
+            var searchQuery = $("#searchQuery").val();
+
+            location.href="/community/dictionary/" + page + "?searchBy=" + searchBy
+            + "&searchQuery=" + searchQuery;
+        }
+
+        </script>
+  </th:block>
+</head>
+<body>
+
+<div layout:fragment="content">
+
+  <form th:action="@{'/community/dictionary/' + ${plants.number}}" role="form" method="get" th:object="${plants}">
+    <div class="form-inline justify-content-center searchContainer" th:object="${searchDto}">
+      <select th:field="*{searchBy}" class="form-control searchInput">
+        <option value="all">선택</option>
+        <option value="korean">한글명</option>
+        <option value="english">영문명</option>
+      </select>
+      <input th:field="*{searchQuery}" type="text" class="form-control searchWord" placeholder="검색어를 입력해주세요">
+      <button id="searchBtn" type="submit" class="btn btn-primary searchButton">검색</button>
+    </div>
+
+    <div>
+      <div th:each="plant, status: ${plants.getContent()}" class="dictionaryContainer">
+        <img style="align-self: center; justify-self: center; object-fit: cover;" width="200" height="200" th:src="${plant.imgSrc}" th:alt="${plant.plantName}" />
+        <div class="dictionaryInfoContainer" style="align-self: center;">
+          <span style="font-weight: 500; font-size: 16px;" th:text="${plant.plantName}"></span>
+          <span class="infoText" th:if="${plant.plantName1} != ''" th:text="'식물학명 : ' + ${plant.plantName1}"></span>
+          <span class="infoText" th:if="${plant.plantName2} != ''" th:text="'식물영명 : ' + ${plant.plantName2}"></span>
+          <span class="infoText" th:if="${plant.plantName3} != ''" th:text="'유통명 : ' + ${plant.plantName3}"></span>
+          <span class="infoText" th:if="${plant.origin} != ''" th:text="'원산지 : ' + ${plant.origin}"></span>
+          <span class="infoText" th:if="${plant.advice} != ''" th:text="'관련 정보 : ' + ${plant.advice}"></span>
+          <span class="infoText" th:if="${plant.height} != ''" th:text="'성장 높이 : ' + ${plant.height} + 'cm'"></span>
+          <span class="infoText" th:if="${plant.width} != ''" th:text="'성장 넓이 : ' + ${plant.width} + 'cm'"></span>
+          <span class="infoText" th:if="${plant.leafShape} != ''" th:text="'잎의 형태 : ' + ${plant.leafShape}"></span>
+          <span class="infoText" th:if="${plant.breeding} != ''" th:text="'번식 시기 : ' + ${plant.breeding}"></span>
+          <span class="infoText" th:if="${plant.functional} != ''" th:text="'기능성 정보 : ' + ${plant.functional}"></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin-top: 10px;" th:with="start=${(plants.number/maxPage) * maxPage + 1}, end = (${(plants.totalPages == 0) ? 1 : (start + (maxPage - 1) < plants.totalPages ? start + (maxPage - 1) : plants.totalPages)})">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-sm">
+
+          <li class="page-item" th:classappend="${plants.first} ? 'disabled'">
+            <a style="color: #2b2f2f;" class="page-link" aria-label="Previous"
+               th:onclick="'javascript:page(' + ${plants.number - 1} + ')'">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+
+          <li class="page-item" th:each="page: ${#numbers.sequence(start, end)}" th:classappend="${plants.number eq page-1} ? 'active' : ''">
+            <a th:onclick="'javascript:page(' + ${page - 1} + ')'" th:inline="text" style="color: #2b2f2f;" class="page-link">[[${page}]]</a>
+          </li>
+
+          <li class="page-item" th:classappend="${plants.last} ? 'disabled'">
+            <a style="color: #2b2f2f;" class="page-link" aria-label="Next"
+               th:onclick="'javascript:page(' + ${plants.number + 1} + ')'">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+    </div>
+  </form>
+
+
+</div>
+
+</body>
+</html>

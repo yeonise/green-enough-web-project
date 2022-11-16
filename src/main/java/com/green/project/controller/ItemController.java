@@ -120,7 +120,6 @@ public class ItemController {
         return "redirect:/business/items";
     }
 
-
     // 상품 관리 페이지
     @GetMapping(value = {"/business/items", "/business/items/{page}"})
     public String itemManage(SearchDto searchDto,

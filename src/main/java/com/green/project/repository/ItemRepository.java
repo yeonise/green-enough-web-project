@@ -12,6 +12,8 @@ import java.util.List;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Long>, QuerydslPredicateExecutor<Item>, ItemRepositoryCustom, StoreItemRepositoryCustom {
 
+    boolean existsByItemBrand(String itemBrand);
+
     List<Item> findByItemName(String itemName);
 
     List<Item> findByItemNameOrItemBrand(String itemName, String itemBrand);

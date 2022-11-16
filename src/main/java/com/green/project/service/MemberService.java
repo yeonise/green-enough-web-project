@@ -2,8 +2,12 @@ package com.green.project.service;
 
 import com.green.project.dto.member.BrandDto;
 import com.green.project.dto.member.MemberDto;
+import com.green.project.entity.Item;
 import com.green.project.entity.Member;
+import com.green.project.entity.Post;
+import com.green.project.repository.ItemRepository;
 import com.green.project.repository.MemberRepository;
+import com.green.project.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,12 +17,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+
+    private final PostRepository postRepository;
+
+    private final ItemRepository itemRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -32,6 +43,26 @@ public class MemberService implements UserDetailsService {
         validateDuplicateMember(member);
         validateDuplicateBrand(member);
         return memberRepository.save(member);
+    }
+
+    // 회원탈퇴
+    public void deleteMember(Long id) {
+        Optional<Member> member = memberRepository.findById(id);
+        // 작성한 게시물이 있을 때
+        if (postRepository.existsByWriter(member.get().getNickname())) {
+            List<Post> postList = postRepository.findByWriter(member.get().getNickname());
+            for (int i = 0; i < postList.size(); i++) {
+                postRepository.deleteById(postList.get(i).getId()); // 등록한 게시물 삭제
+            }
+        }
+        // 등록한 상품이 있을 경우
+        if (itemRepository.existsByItemBrand(member.get().getBrand())) {
+            List<Item> itemList = itemRepository.findByItemBrandOrderByPriceDesc(member.get().getBrand());
+            for (int i = 0; i < itemList.size(); i++) {
+                itemRepository.deleteById(itemList.get(i).getId()); // 등록한 상품 삭제
+            }
+        }
+        memberRepository.deleteById(id); // 회원 삭제
     }
 
     public String getBrandByEmail(String email) {

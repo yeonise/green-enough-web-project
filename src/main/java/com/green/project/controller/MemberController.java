@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -115,6 +117,15 @@ public class MemberController {
             return "member/brand-register";
         }
         return "member/register-complete";
+    }
+
+    // 회원 삭제
+    @PostMapping(value = "/sign-out")
+    public String signOut(Principal principal, HttpSession session) throws Exception {
+        Member member = memberService.getMemberByEmail(principal.getName());
+        memberService.deleteMember(member.getId());
+        session.invalidate();
+        return "redirect:/";
     }
 
     // 중복 확인하기
